@@ -110,8 +110,27 @@ The frontend includes an 8-second API request timeout with a built-in project-ca
 - Project descriptions and technology lists are based on the supplied CV and existing portfolio source. No user counts, performance metrics, or business outcomes have been invented.
 - Confirm all contact links, repository visibility, project dates, and CV details before deployment.
 
-## Deployment notes
-The current application serves frontend and API from one Go server, so same-origin requests need no CORS configuration. For Vercel or another static-only host, deploy the Go backend as a serverless/API service or use a Go-capable host; static hosting alone will not run `main.go`. If frontend and API are hosted on separate origins, configure an explicit API base URL and a restricted CORS policy rather than using a wildcard in production.
+## Deploy to Vercel (single Go project)
+
+This repository is configured to deploy the existing long-running Go HTTP server from `backend/`. Vercel added zero-configuration support for Go API backends in April 2026; the application can keep using `net/http` and its existing HTTP server lifecycle rather than being rewritten as individual serverless handlers.
+
+1. Push the repository to GitHub.
+2. In Vercel, import the repository.
+3. Set **Root Directory** to `backend`.
+4. Keep **Application Preset** as `Go`.
+5. Leave Build and Output settings at their detected defaults, then deploy.
+6. Test `/`, `/api/health`, and `/api/projects` on the deployed domain.
+
+The `backend/frontend/` directory is a deployment copy of `frontend/`. It is included because Vercel builds and runs the project from the selected `backend/` root, while the Go server serves static files from `./frontend`. If you edit the website, synchronize the copy before pushing:
+
+```bash
+./sync-vercel-frontend.sh
+git add frontend backend/frontend
+git commit -m "Update portfolio frontend"
+git push
+```
+
+The root-level `run-local.sh` remains available for local development. If frontend and API are hosted on separate origins in a future deployment, configure an explicit API base URL and a restricted CORS policy rather than using a wildcard in production.
 
 ## Backend architecture
 

@@ -141,3 +141,12 @@ Validation after refactor: `go test -count=1 ./...`, `go test -race -count=1 ./.
 - WhatsApp and email handoff still require a manual test in installed applications.
 
 Scores should therefore distinguish source-level quality from visual/browser verification; no Lighthouse or device-test pass is implied.
+
+
+## Vercel deployment correction
+
+- Vercel announced zero-configuration support for long-running Go API backends on 2 April 2026.
+- The deployed project selected `backend/` as its Root Directory, but the original Go startup routine requires a `frontend/` directory and that directory was outside the selected deployment root.
+- Added `backend/frontend/` as the deployment copy so `findFrontendDir()` can resolve the static site from the Vercel project root.
+- Deployment settings: Root Directory `backend`, Preset `Go`, detected default build settings.
+- A fresh deployment is required after pushing these changes; local tests do not independently verify the remote Vercel deployment.
