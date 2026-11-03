@@ -125,57 +125,31 @@
   };
 
   if (projectGrid) {
-    if (apiStatus) apiStatus.textContent = "Loading projects…";
-    const controller = new AbortController();
-    const requestTimeout = window.setTimeout(() => controller.abort(), 8000);
-
-    fetch("/api/projects", {
-      headers: { Accept: "application/json" },
-      signal: controller.signal
-    })
+    fetch("/data/projects.json", { headers: { Accept: "application/json" } })
       .then((response) => {
-        if (!response.ok) throw new Error(`Projects API returned ${response.status}`);
+        if (!response.ok) throw new Error(`Project data returned ${response.status}`);
         return response.json();
       })
       .then((projects) => {
-        if (!Array.isArray(projects) || projects.length === 0) {
-          throw new Error("Projects API returned no project records");
-        }
+        if (!Array.isArray(projects) || projects.length === 0) throw new Error("No project records found");
         const validProjects = projects.filter((project) =>
           project && typeof project.slug === "string" && /^[a-z0-9-]+$/.test(project.slug) &&
-          typeof project.title === "string" && project.title.trim().length > 0 &&
-          typeof project.description === "string" && project.description.trim().length > 0 &&
-          typeof project.category === "string" && project.category.trim().length > 0 &&
-          Array.isArray(project.stack) && project.stack.length > 0 && project.stack.every((item) => typeof item === "string" && item.trim().length > 0) &&
-          typeof project.repository === "string" &&
-          (() => {
-            try {
-              const repositoryUrl = new URL(project.repository);
-              return repositoryUrl.protocol === "https:" && repositoryUrl.hostname === "github.com" && repositoryUrl.pathname.split("/").filter(Boolean).length >= 2;
-            } catch {
-              return false;
-            }
-          })()
+          typeof project.title === "string" && typeof project.description === "string" &&
+          typeof project.category === "string" && Array.isArray(project.stack) &&
+          typeof project.repository === "string"
         );
-        if (validProjects.length === 0) throw new Error("Projects API returned invalid project data");
-
+        if (!validProjects.length) throw new Error("Project data is invalid");
         const fragment = document.createDocumentFragment();
-        validProjects.forEach((project, index) => fragment.append(createProjectCard(project, index)));
+        validProjects.filter((project) => project.featured).forEach((project, index) => {
+          fragment.append(createProjectCard(project, index));
+        });
         projectGrid.replaceChildren(fragment);
-        if (apiStatus) {
-          apiStatus.textContent = `Live portfolio data · ${validProjects.length} projects loaded from the Go API.`;
-        }
+        if (apiStatus) apiStatus.textContent = `Selected work · ${validProjects.length} projects available.`;
       })
       .catch((error) => {
-        const reason = error.name === "AbortError"
-          ? "The project service took too long to respond."
-          : error.message;
-        if (apiStatus) {
-          apiStatus.textContent = "Showing the built-in project preview. Live project data is temporarily unavailable.";
-        }
-        console.warn("Project API fallback:", reason);
-      })
-      .finally(() => window.clearTimeout(requestTimeout));
+        if (apiStatus) apiStatus.textContent = "Project previews are temporarily unavailable. Please refresh the page.";
+        console.warn("Project data:", error);
+      });
   }
 
   const setHomeAsActive = () => {

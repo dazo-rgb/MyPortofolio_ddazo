@@ -31,19 +31,16 @@
     container.append(section);
   };
 
-  const controller = new AbortController();
-  const requestTimeout = window.setTimeout(() => controller.abort(), 8000);
-
-  fetch(`/api/projects/${encodeURIComponent(slug)}`, {
-    headers: { Accept: "application/json" },
-    signal: controller.signal
+  fetch("/data/projects.json", {
+    headers: { Accept: "application/json" }
   })
     .then((response) => {
-      if (response.status === 404) throw new Error("This project could not be found.");
       if (!response.ok) throw new Error("Project details are temporarily unavailable.");
       return response.json();
     })
-    .then((project) => {
+    .then((projects) => {
+      const project = projects.find((item) => item.slug === slug);
+      if (!project) throw new Error("This project could not be found.");
       const isNonEmptyString = (value) => typeof value === "string" && value.trim().length > 0;
       const isStringList = (value) => Array.isArray(value) && value.every(isNonEmptyString);
       let repositoryIsValid = false;
@@ -110,14 +107,10 @@
       root.replaceChildren(hero, grid);
     })
     .catch((error) => {
-      const messageText = error.name === "AbortError"
-        ? "The project service took too long to respond. Please return to the portfolio and try again."
-        : error.message;
-      const message = element("p", "", messageText);
+      const message = element("p", "", error.message);
       const back = element("a", "button button-dark", "Back to projects");
       back.href = "/#work";
       root.replaceChildren(element("div", "case-error"));
       root.firstElementChild.append(element("h1", "", "Unable to load project"), message, back);
-    })
-    .finally(() => window.clearTimeout(requestTimeout));
+    });
 })();

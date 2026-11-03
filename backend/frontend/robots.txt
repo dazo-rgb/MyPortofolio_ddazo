@@ -1,3 +1,0 @@
-User-agent: *
-Allow: /
-Sitemap: https://myportofolioddazo.vercel.app/sitemap.xml

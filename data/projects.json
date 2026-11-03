@@ -1,0 +1,87 @@
+[
+  {
+    "slug": "dazo-musicyt",
+    "title": "Dazo - Musicyt",
+    "category": "Audio · Engineering",
+    "date": "October 2026",
+    "description": "A lightweight, responsive web-based music platform for searching and playing YouTube music through a focused audio player.",
+    "overview": "Dazo - Musicyt is a web-based music platform that brings search, playback, audio customization, lyrics, and personal music management into one responsive experience.",
+    "role": "Personal project · Backend and application development",
+    "stack": [
+      "Go",
+      "Rust",
+      "WebAssembly",
+      "HTML5",
+      "CSS3",
+      "JavaScript",
+      "Bootstrap 5",
+      "Web Audio API",
+      "yt-dlp",
+      "Docker"
+    ],
+    "features": [
+      "YouTube music search and playback",
+      "Go REST API endpoints for music search, audio stream extraction, and audio proxy handling",
+      "Customizable audio equalizer using the Web Audio API",
+      "Synchronized lyrics and dynamic album artwork",
+      "Playback queue, shuffle, repeat, and playlist management",
+      "Liked songs and playback history using LocalStorage"
+    ],
+    "technicalWork": [
+      "Implemented backend endpoints in Go to support music search and audio delivery workflows",
+      "Integrated yt-dlp to retrieve direct audio streams",
+      "Built interactive playback controls and music management with JavaScript",
+      "Connected the equalizer interface to the Web Audio API",
+      "Included Rust and WebAssembly in the audio-engine technology stack"
+    ],
+    "engineeringNotes": [
+      "Coordinating search, stream retrieval, and browser playback across separate application responsibilities",
+      "Keeping playback state, queue actions, and user-managed music data consistent",
+      "Providing responsive controls while supporting configurable audio processing"
+    ],
+    "repository": "https://github.com/dazo-rgb/dazo-musicyt",
+    "featured": true
+  },
+  {
+    "slug": "jatinusa",
+    "title": "Jatinusa - Website",
+    "category": "E-commerce · Web",
+    "date": "September 2026",
+    "description": "A full-stack furniture commerce platform designed for teak furniture businesses to showcase products, manage inventory, and provide product price estimates.",
+    "overview": "Jatinusa is a furniture e-commerce website concept for teak furniture businesses. It combines a responsive product catalog with customer-facing shopping features and product management capabilities.",
+    "role": "Personal project · Full-stack web development",
+    "stack": [
+      "HTML5",
+      "CSS3",
+      "JavaScript ES6+",
+      "Bootstrap 5",
+      "Node.js",
+      "Express.js",
+      "MySQL",
+      "LocalStorage",
+      "Git",
+      "GitHub"
+    ],
+    "features": [
+      "Responsive furniture catalog and product browsing",
+      "Detailed product information pages",
+      "User authentication",
+      "Shopping cart functionality",
+      "Product CRUD and inventory management",
+      "Furniture price estimation"
+    ],
+    "technicalWork": [
+      "Developed responsive catalog and product interfaces using HTML, CSS, and JavaScript",
+      "Built backend functionality with Node.js and Express.js",
+      "Integrated MySQL for product data and database operations",
+      "Implemented authentication, product CRUD, cart, and price estimation features"
+    ],
+    "engineeringNotes": [
+      "Connecting product presentation with persistent relational product data",
+      "Supporting both customer shopping flows and product-management operations",
+      "Keeping catalog and estimation interactions understandable across screen sizes"
+    ],
+    "repository": "https://github.com/dazo-rgb/JATINUSA-WEB",
+    "featured": true
+  }
+]
